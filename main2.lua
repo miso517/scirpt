@@ -1,110 +1,12 @@
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
-local flying = false
-local flySpeed = 50
-local bodyVelocity
-local bodyGyro
+--[[
+ .____                  ________ ___.    _____                           __                
+ |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
+ |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
+ |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
+ |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
+         \/          \/         \/    \/                \/     \/     \/                   
+          \_Welcome to LuaObfuscator.com   (Alpha 0.10.8) ~  Much Love, Ferib 
 
--- Keybind to toggle flying
-local flyKey = Enum.KeyCode.F
+]]--
 
--- Ensure the character's PrimaryPart is set
-local function getPrimaryPart()
-    return character:FindFirstChild("HumanoidRootPart")
-end
-
--- Function to enable flying
-local function startFlying()
-    local primaryPart = getPrimaryPart()
-    if not primaryPart then
-        warn("Character's PrimaryPart (HumanoidRootPart) is missing!")
-        return
-    end
-
-    flying = true
-    humanoid.PlatformStand = true -- Prevents walking animations while flying
-
-    -- Create BodyVelocity to control movement
-    bodyVelocity = Instance.new("BodyVelocity")
-    bodyVelocity.MaxForce = Vector3.new(1e5, 1e5, 1e5) -- High force to counter gravity
-    bodyVelocity.Velocity = Vector3.new(0, 0, 0)
-    bodyVelocity.Parent = primaryPart
-
-    -- Create BodyGyro to stabilize orientation
-    bodyGyro = Instance.new("BodyGyro")
-    bodyGyro.MaxTorque = Vector3.new(1e5, 1e5, 1e5)
-    bodyGyro.CFrame = primaryPart.CFrame
-    bodyGyro.Parent = primaryPart
-end
-
--- Function to disable flying
-local function stopFlying()
-    local primaryPart = getPrimaryPart()
-    if not primaryPart then return end
-
-    flying = false
-    humanoid.PlatformStand = false -- Re-enable normal movement
-
-    -- Remove BodyVelocity and BodyGyro
-    if bodyVelocity then 
-        bodyVelocity:Destroy()
-        bodyVelocity = nil
-    end
-    if bodyGyro then 
-        bodyGyro:Destroy() 
-        bodyGyro = nil
-    end
-end
-
--- Toggle fly mode on key press
-game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
-    if isProcessed then return end
-    if input.KeyCode == flyKey then
-        if flying then
-            stopFlying()
-        else
-            startFlying()
-        end
-    end
-end)
-
--- Update flying mechanics
-game:GetService("RunService").RenderStepped:Connect(function(deltaTime)
-    if flying and bodyVelocity and bodyGyro then
-        local primaryPart = getPrimaryPart()
-        if not primaryPart then return end
-
-        -- Handle movement direction based on user input
-        local moveDirection = Vector3.new(0, 0, 0)
-        local camera = workspace.CurrentCamera
-        local inputService = game:GetService("UserInputService")
-
-        if inputService:IsKeyDown(Enum.KeyCode.W) then
-            moveDirection = moveDirection + camera.CFrame.LookVector
-        end
-        if inputService:IsKeyDown(Enum.KeyCode.S) then
-            moveDirection = moveDirection - camera.CFrame.LookVector
-        end
-        if inputService:IsKeyDown(Enum.KeyCode.A) then
-            moveDirection = moveDirection - camera.CFrame.RightVector
-        end
-        if inputService:IsKeyDown(Enum.KeyCode.D) then
-            moveDirection = moveDirection + camera.CFrame.RightVector
-        end
-        if inputService:IsKeyDown(Enum.KeyCode.Space) then
-            moveDirection = moveDirection + Vector3.new(0, 1, 0) -- Ascend
-        end
-        if inputService:IsKeyDown(Enum.KeyCode.LeftShift) then
-            moveDirection = moveDirection - Vector3.new(0, 1, 0) -- Descend
-        end
-
-        -- Normalize and apply speed
-        if moveDirection.Magnitude > 0 then
-            moveDirection = moveDirection.Unit * flySpeed
-        end
-
-        bodyVelocity.Velocity = moveDirection
-        bodyGyro.CFrame = CFrame.new(primaryPart.Position, primaryPart.Position + camera.CFrame.LookVector)
-    end
-end)
+local v0={Select_Color=Color3.fromRGB(363 -108 ,0,1065 -(68 + 997) ),Prediction_Enable=true};local v1=game:GetService("UserInputService");local v2=game:GetService("RunService");local v3=game:GetService("Players");local v4=v3.LocalPlayer;local v5=v4.Character;local v6=v4:GetMouse();local v7=v5:WaitForChild("HumanoidRootPart");local v8=v5:WaitForChild("Humanoid");local v9=Instance.new("SelectionBox",script);v9.Color3=v0.Select_Color;v9.LineThickness=0.02;local v13=nil;local v14=false;local v15=false;local function v16(v19) v13=v19;v14=true;end local function v17() local v20=0;while true do if (v20==1) then v9.Adornee=nil;break;end if (v20==(1270 -(226 + 1044))) then v13=nil;v14=false;v20=4 -3 ;end end end local function v18() local v21=0;local v22;local v23;while true do if (v21==(120 -(32 + 85))) then v22.Unequipped:Connect(function() v17();end);break;end if (v21==0) then v22=Instance.new("Tool");v22.Name="Fling";v22.RequiresHandle=true;v23=Instance.new("Part");v21=1 + 0 ;end if (v21==2) then v23.CanCollide=true;v23.Parent=v22;v22.Parent=v4.Backpack;v22.Equipped:Connect(function() v16(v22);end);v21=3;end if (v21==(1 + 0)) then v23.Name="Handle";v23.Size=Vector3.new(958 -(892 + 65) ,2 -1 ,1);v23.BrickColor=BrickColor.new("Royal blue");v23.Anchored=false;v21=3 -1 ;end end end v4.CharacterAdded:Connect(function(v24) v24.ChildAdded:Connect(function(v25) if v25:IsA("Tool") then v25.Equipped:Connect(function() v16(v25);end);v25.Unequipped:Connect(function() v17();end);end end);end);v6.Move:Connect(function() if v14 then if v6.Target then if v6.Target.Parent:FindFirstChildOfClass("Humanoid") then local v42=v6.Target.Parent;v9.Adornee=v42;else v9.Adornee=nil;end else v9.Adornee=nil;end end end);v6.Button1Down:Connect(function() if (v14 and (v15==false)) then local v26=v9.Adornee;if (v26~=nil) then local v39=0 -0 ;local v40;local v41;while true do if ((353 -(87 + 263))==v39) then v5.HumanoidRootPart.AssemblyLinearVelocity=Vector3.new();v5.HumanoidRootPart.AssemblyAngularVelocity=Vector3.new();v39=4;end if (v39==(184 -(67 + 113))) then v5.HumanoidRootPart.CFrame=v41;v5.Humanoid:ChangeState(Enum.HumanoidStateType.Landed);break;end if (v39==2) then while v5.HumanoidRootPart and v26.HumanoidRootPart  do v2.Heartbeat:Wait();if (v26.HumanoidRootPart.Velocity.Magnitude<=(15 + 5)) then if v0.Prediction_Enable then local v51=v26.HumanoidRootPart.Position + ((v26.Humanoid.MoveDirection * v26.Humanoid.WalkSpeed)/2) + (Vector3.new(0 -0 ,v26.HumanoidRootPart.Velocity.Y/10 ,0 + 0 )) ;v5.HumanoidRootPart.CFrame=(CFrame.new(v51)) * v7.CFrame.Rotation ;else v5.HumanoidRootPart.CFrame=v26.HumanoidRootPart.CFrame * v7.CFrame.Rotation ;end v5.HumanoidRootPart.Velocity=Vector3.new();else break;end end v40:Destroy();v39=11 -8 ;end if (v39==(952 -(802 + 150))) then v15=true;v40=Instance.new("BodyGyro",v5.HumanoidRootPart);v39=2 -1 ;end if (v39==(1 -0)) then v40.CFrame=CFrame.Angles(math.huge,math.huge,math.huge);v41=v5.HumanoidRootPart.CFrame;v39=2 + 0 ;end end end v15=false;end end);v18();
